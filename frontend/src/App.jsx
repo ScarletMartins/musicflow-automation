@@ -13,6 +13,8 @@ function PrivateRoute({ children }) {
   return isAuthenticated ? children : <Navigate to="/" />;
 }
 
+console.log("API URL:", import.meta.env.VITE_API_URL);
+
 function App() {
   return (
     <BrowserRouter>
