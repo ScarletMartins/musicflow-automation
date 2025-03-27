@@ -1,0 +1,1 @@
+print(">> Alerta simulado enviado para os administradores.")

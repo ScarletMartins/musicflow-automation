@@ -1,0 +1,1 @@
+print(">> Backup simulado executado com sucesso.")
