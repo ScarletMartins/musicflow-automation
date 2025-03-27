@@ -12,20 +12,26 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
-    const resposta = await fetch(`${import.meta.env.VITE_API_URL}token/`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
-
-    const data = await resposta.json();
-
-    if (resposta.ok) {
-      login(data.access, data.refresh);
-      navigate("/home");
-    } else {
-      setMensagem(data.detail || "Erro ao fazer login.");
+  
+    try {
+      const resposta = await fetch(`${import.meta.env.VITE_API_URL}token/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+  
+      const isJson = resposta.headers.get("content-type")?.includes("application/json");
+      const data = isJson ? await resposta.json() : null;
+  
+      if (resposta.ok) {
+        login(data.access, data.refresh);
+        navigate("/home");
+      } else {
+        setMensagem(data?.detail || "Erro ao fazer login.");
+      }
+    } catch (err) {
+      setMensagem("Erro inesperado no login.");
+      console.error("Erro de rede no login:", err);
     }
   };
 
