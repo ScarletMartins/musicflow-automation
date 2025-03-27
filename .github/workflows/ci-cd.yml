@@ -20,12 +20,14 @@ jobs:
           python-version: '3.11'
 
       - name: Instalar dependências do backend
+        working-directory: ./backend
         run: |
           python -m venv venv
           source venv/bin/activate
-          pip install -r requirements.txt
+          pip install -r ../requirements.txt
 
       - name: Rodar migrações e testes Django
+        working-directory: ./backend
         run: |
           source venv/bin/activate
           python manage.py migrate
