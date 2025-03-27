@@ -1,5 +1,5 @@
 from django.test import TestCase
-from core import alerta, backup, relatorio, validador
+from core.scripts.fake import alerta, backup, relatorio, validador
 
 
 class TestProcessosSimulados(TestCase):
