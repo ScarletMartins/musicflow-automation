@@ -1,0 +1,45 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências do backend
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Rodar migrações e testes Django
+        run: |
+          source venv/bin/activate
+          python manage.py migrate
+          python manage.py test
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Instalar dependências do frontend
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Build do frontend
+        working-directory: ./frontend
+        run: npm run build
