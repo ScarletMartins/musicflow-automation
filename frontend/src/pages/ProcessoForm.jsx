@@ -19,7 +19,7 @@ export default function ProcessoForm() {
   useEffect(() => {
     if (id) {
       axiosAuth
-        .get(`/api/processos/${id}/`)
+        .get(`processos/${id}/`)
         .then((res) => setForm(res.data))
         .catch(() => setMensagem("Erro ao carregar processo."));
     }
@@ -37,10 +37,10 @@ export default function ProcessoForm() {
     e.preventDefault();
     try {
       if (id) {
-        await axiosAuth.put(`/api/processos/${id}/`, form);
+        await axiosAuth.put(`processos/${id}/`, form);
         setMensagem("Processo atualizado com sucesso!");
       } else {
-        await axiosAuth.post("/api/processos/", form);
+        await axiosAuth.post("processos/", form);
         setMensagem("Processo criado com sucesso!");
       }
       setTimeout(() => navigate("/processos"), 1000);

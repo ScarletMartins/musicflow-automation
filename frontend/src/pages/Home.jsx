@@ -11,7 +11,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axiosAuth.get("/api/processos/");
+        const res = await axiosAuth.get("processos/");
         setProcessos(res.data);
       } catch {
         console.log("Erro ao carregar processos");

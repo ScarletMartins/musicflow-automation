@@ -10,7 +10,7 @@ export default function Historico() {
 
   useEffect(() => {
     axiosAuth
-      .get("/api/execucoes/")
+      .get("execucoes/")
       .then((res) => setExecucoes(res.data))
       .catch(() => console.log("Erro ao carregar histórico"));
   }, []);

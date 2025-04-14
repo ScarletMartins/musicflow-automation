@@ -15,7 +15,7 @@ export default function Processos() {
 
   const fetchProcessos = async () => {
     try {
-      const res = await axiosAuth.get("/api/processos/");
+      const res = await axiosAuth.get("processos/");
       setProcessos(res.data);
     } catch {
       setMensagem("Erro ao carregar processos.");
@@ -38,7 +38,7 @@ export default function Processos() {
   const handleDelete = async (id) => {
     console.log("Tentando excluir o processo:", id);
     try {
-      await axiosAuth.delete(`/api/processos/${id}/`);
+      await axiosAuth.delete(`processos/${id}/`);
       setMensagem("🗑️ Processo excluído com sucesso.");
       fetchProcessos();
     } catch {
@@ -48,7 +48,7 @@ export default function Processos() {
 
   const toggleAtivo = async (id, statusAtual) => {
     try {
-      await axiosAuth.patch(`/api/processos/${id}/`, { ativo: !statusAtual });
+      await axiosAuth.patch(`processos/${id}/`, { ativo: !statusAtual });
       fetchProcessos();
     } catch {
       setMensagem("❌ Erro ao atualizar status.");
