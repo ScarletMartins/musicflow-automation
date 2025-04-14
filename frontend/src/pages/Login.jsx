@@ -64,6 +64,12 @@ export default function Login() {
             Entrar
           </button>
         </form>
+        <p className="text-sm text-center mt-4">
+          Ainda não tem conta?{" "}
+          <a href="/register" className="text-blue-800 underline hover:text-blue-600">
+            Cadastre-se aqui
+          </a>
+        </p>
 
         {mensagem && <p className="text-sm text-red-600 text-center mt-4">{mensagem}</p>}
       </div>

@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 from rest_framework import status, viewsets, permissions
 from .models import ProcessoAutomatizado, ExecucaoProcesso
 from .serializers import ProcessoSerializer, ExecucaoProcessoSerializer
-from django.http import JsonResponse
 
 
 @api_view(['GET'])
@@ -47,10 +46,3 @@ class ProcessoViewSet(viewsets.ModelViewSet):
 class ExecucaoProcessoViewSet(viewsets.ModelViewSet):
     queryset = ExecucaoProcesso.objects.all().order_by('-data_execucao')
     serializer_class = ExecucaoProcessoSerializer
-
-
-def criar_usuario_teste(request):
-    if not User.objects.filter(username='admin').exists():
-        User.objects.create_user('admin', 'admin@email.com', 'senha123')
-        return JsonResponse({'status': 'Usuário criado'})
-    return JsonResponse({'status': 'Já existe'})

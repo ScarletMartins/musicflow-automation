@@ -4,7 +4,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from rest_framework.routers import DefaultRouter
-from .views import status_view, register_view, ProcessoViewSet, ExecucaoProcessoViewSet, criar_usuario_teste
+from .views import status_view, register_view, ProcessoViewSet, ExecucaoProcessoViewSet
 
 router = DefaultRouter()
 router.register(r'processos', ProcessoViewSet)
@@ -14,8 +14,7 @@ urlpatterns = [
     path('status/', status_view),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('register/', register_view),
-    path("criar-usuario/", criar_usuario_teste),
+    path('register/', register_view)
 ]
 
 urlpatterns += router.urls
