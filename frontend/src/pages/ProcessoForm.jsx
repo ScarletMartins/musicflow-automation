@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useAxiosAuth } from "../api/axiosInstance";
 
 export default function ProcessoForm() {
-  const { id } = useParams(); // se estiver presente: edição
+  const { id } = useParams();
   const axiosAuth = useAxiosAuth();
   const navigate = useNavigate();
 
@@ -19,7 +19,7 @@ export default function ProcessoForm() {
   useEffect(() => {
     if (id) {
       axiosAuth
-        .get(`processos/${id}/`)
+        .get(`processos/${id}`)
         .then((res) => setForm(res.data))
         .catch(() => setMensagem("Erro ao carregar processo."));
     }
@@ -37,10 +37,10 @@ export default function ProcessoForm() {
     e.preventDefault();
     try {
       if (id) {
-        await axiosAuth.put(`processos/${id}/`, form);
+        await axiosAuth.put(`processos/${id}`, form);
         setMensagem("Processo atualizado com sucesso!");
       } else {
-        await axiosAuth.post("processos/", form);
+        await axiosAuth.post("processos", form);
         setMensagem("Processo criado com sucesso!");
       }
       setTimeout(() => navigate("/processos"), 1000);
