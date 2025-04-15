@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 
-const BASE_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.VITE_API_URL.replace(/\/$/, "");
 
 export const useAxiosAuth = () => {
   const { accessToken, login, logout } = useAuth();
