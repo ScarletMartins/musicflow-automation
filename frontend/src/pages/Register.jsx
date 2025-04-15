@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ThemeToggle from "../components/ThemeToggle";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -28,9 +29,12 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 to-green-300">
-      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center text-green-800 mb-6">Cadastro</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-100 to-blue-200 dark:from-gray-900 dark:to-gray-800 transition-colors">
+      <ThemeToggle />
+      <div className="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center text-pink-800 dark:text-pink-300 mb-6">
+          Criar Conta
+        </h2>
 
         <form onSubmit={handleRegister} className="space-y-4">
           <input
@@ -38,7 +42,7 @@ export default function Register() {
             placeholder="Usuário"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full border px-3 py-2 rounded focus:outline-none focus:ring focus:ring-green-300"
+            className="w-full border px-3 py-2 rounded focus:outline-none focus:ring focus:ring-pink-300 dark:bg-slate-700 dark:text-white dark:border-slate-600"
             required
           />
           <input
@@ -46,24 +50,30 @@ export default function Register() {
             placeholder="Senha"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border px-3 py-2 rounded focus:outline-none focus:ring focus:ring-green-300"
+            className="w-full border px-3 py-2 rounded focus:outline-none focus:ring focus:ring-pink-300 dark:bg-slate-700 dark:text-white dark:border-slate-600"
             required
           />
           <button
             type="submit"
-            className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
+            className="w-full bg-pink-600 text-white py-2 rounded hover:bg-pink-700 dark:hover:bg-pink-500 transition"
           >
             Cadastrar
           </button>
         </form>
-        <p className="text-sm text-center mt-4">
+
+        <p className="text-sm text-center mt-4 text-gray-700 dark:text-gray-300">
           Já tem conta?{" "}
-          <a href="/" className="text-blue-800 underline hover:text-blue-600">
+          <a
+            href="/"
+            className="text-blue-800 dark:text-blue-300 underline hover:text-blue-600 dark:hover:text-blue-400"
+          >
             Entre aqui
           </a>
         </p>
 
-        {mensagem && <p className="text-sm text-center text-red-600 mt-4">{mensagem}</p>}
+        {mensagem && (
+          <p className="text-sm text-center text-red-600 mt-4">{mensagem}</p>
+        )}
       </div>
     </div>
   );

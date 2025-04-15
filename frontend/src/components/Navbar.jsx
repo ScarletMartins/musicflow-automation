@@ -1,43 +1,84 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Home, Cog, Clock, LogOut, ChevronLeft, ChevronRight, Sun, Moon } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
-export default function Navbar() {
+export default function Sidebar() {
   const { isAuthenticated, logout } = useAuth();
-  const navigate = useNavigate();
+  const [collapsed, setCollapsed] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
 
-  const handleLogout = () => {
-    logout();
-    navigate("/");
+  const toggleSidebar = () => setCollapsed(!collapsed);
+  const toggleTheme = () => {
+    const newTheme = !darkMode;
+    setDarkMode(newTheme);
+    if (newTheme) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
   };
 
-  return (
-    <nav className="bg-blue-800 text-white px-6 py-4 shadow-md flex items-center justify-between">
-      <h1 className="text-2xl font-bold">
-        <Link to={isAuthenticated ? "/home" : "/"} className="hover:text-blue-300 transition">
-          🎵 MusicFlow
-        </Link>
-      </h1>
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (storedTheme === "dark" || (!storedTheme && prefersDark)) {
+      document.documentElement.classList.add("dark");
+      setDarkMode(true);
+    }
+  }, []);
 
-      <div className="space-x-6 text-sm font-medium">
-        {isAuthenticated ? (
-          <>
-            <Link to="/home" className="hover:text-blue-300 transition">Home</Link>
-            <Link to="/processos" className="hover:text-blue-300 transition">Processos</Link>
-            <Link to="/historico" className="hover:text-blue-300 transition">Histórico</Link>
-            <button
-              onClick={handleLogout}
-              className="text-red-300 hover:text-red-400 transition"
+  const menuItems = [
+    { label: "Home", to: "/home", icon: <Home className="w-5 h-5" /> },
+    { label: "Processos", to: "/processos", icon: <Cog className="w-5 h-5" /> },
+    { label: "Histórico", to: "/historico", icon: <Clock className="w-5 h-5" /> },
+  ];
+
+  return (
+    <div className={`h-screen bg-pink-900 dark:bg-gray-900 text-white fixed top-0 left-0 transition-all duration-300 flex flex-col justify-between ${collapsed ? "w-16" : "w-64"} shadow-md`}>
+      <div>
+        <div className="flex items-center justify-between px-4 py-4">
+          <button onClick={toggleSidebar} className="text-white">
+            {collapsed ? <ChevronRight /> : <ChevronLeft />}
+          </button>
+          {!collapsed && <h1 className="text-lg font-bold">MusicFlow <span className="text-pink-200 dark:text-pink-600">.</span></h1>}
+        </div>
+
+        <nav className="mt-4 space-y-2">
+          {isAuthenticated && menuItems.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              className="flex items-center gap-3 px-4 py-2 hover:bg-pink-600 dark:hover:bg-gray-800 transition text-sm"
             >
-              Sair
+              {item.icon}
+              {!collapsed && <span>{item.label}</span>}
+            </Link>
+          ))}
+
+          {isAuthenticated && (
+            <button
+              onClick={logout}
+              className="flex items-center gap-3 px-4 py-2 w-full text-left hover:bg-pink-600 dark:hover:bg-gray-800 transition text-sm"
+            >
+              <LogOut className="w-5 h-5" />
+              {!collapsed && <span>Sair</span>}
             </button>
-          </>
-        ) : (
-          <>
-            <Link to="/" className="hover:text-blue-300 transition">Login</Link>
-            <Link to="/register" className="hover:text-blue-300 transition">Cadastro</Link>
-          </>
-        )}
+          )}
+        </nav>
       </div>
-    </nav>
+
+      <div className="p-4 border-t border-pink-400 dark:border-gray-700">
+        <button
+          onClick={toggleTheme}
+          className="flex items-center gap-2 text-white text-sm hover:text-gray-200 transition"
+        >
+          {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          {!collapsed && <span>{darkMode ? "Modo Claro" : "Modo Escuro"}</span>}
+        </button>
+      </div>
+    </div>
   );
 }

@@ -1,10 +1,11 @@
-import Navbar from "./Navbar";
+import Sidebar from "./Navbar";
+
 
 export default function BaseLayout({ children }) {
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-800">
-      <Navbar />
-      <main className="max-w-5xl mx-auto py-8 px-4">
+    <div className="min-h-screen text-gray-800 bg-gray-100 dark:bg-slate-700">
+      <Sidebar />
+      <main className="ml-16 md:ml-64 transition-all duration-300 flex-1 py-8 px-6">
         {children}
       </main>
     </div>
