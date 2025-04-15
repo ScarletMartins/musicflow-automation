@@ -38,19 +38,21 @@ export default function Processos() {
   const handleDelete = async (id) => {
     console.log("Tentando excluir o processo:", id);
     try {
-      await axiosAuth.delete(`/processos/${id}`);
+      await axiosAuth.delete(`/processos/${id}/`);
       setMensagem("🗑️ Processo excluído com sucesso.");
       fetchProcessos();
     } catch {
+      console.error("Erro ao excluir processo:", err.response?.data || err.message);
       setMensagem("❌ Erro ao excluir processo.");
     }
   };
 
   const toggleAtivo = async (id, statusAtual) => {
     try {
-      await axiosAuth.patch(`/processos/${id}`, { ativo: !statusAtual });
+      await axiosAuth.patch(`/processos/${id}/`, { ativo: !statusAtual });
       fetchProcessos();
     } catch {
+      console.error("Erro ao atualizar status:", err.response?.data || err.message);
       setMensagem("❌ Erro ao atualizar status.");
     }
   };
