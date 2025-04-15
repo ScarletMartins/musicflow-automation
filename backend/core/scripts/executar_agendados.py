@@ -1,44 +1,48 @@
 import sys
 import os
-import time
 import django
+from django.utils import timezone
 
-# Caminho absoluto da raiz do projeto
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(BASE_DIR)
-
-# Configura variável de ambiente para o Django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
-
-# Inicializa o Django
 django.setup()
 
-print(">> Iniciando verificação de processos agendados...", flush=True)
-
-from django.utils import timezone
 from core.models import ProcessoAutomatizado, ExecucaoProcesso
+from core.utils.email import enviar_email_execucao
 
-while True:
-    agora = timezone.now()
+print(">> Executando verificação de processos agendados...", flush=True)
 
-    processos = ProcessoAutomatizado.objects.filter(
-        ativo=True,
-        data_execucao_agendada__lte=agora
+agora = timezone.now()
+
+processos = ProcessoAutomatizado.objects.filter(
+    ativo=True,
+    data_execucao_agendada__lte=agora
+)
+
+for processo in processos:
+    print(f"Executando: {processo.nome}", flush=True)
+
+    saida = f"Processo '{processo.nome}' executado automaticamente em {agora.strftime('%d/%m/%Y %H:%M:%S')}."
+
+    ExecucaoProcesso.objects.create(
+        processo=processo,
+        status="SUCESSO",
+        saida=saida,
+        resumo=processo.descricao[:200]
     )
 
-    for processo in processos:
-        print(f"Executando: {processo.nome}", flush=True)
+    processo.data_execucao_agendada = None
+    processo.save()
 
-        saida = f"Processo '{processo.nome}' executado automaticamente em {agora.strftime('%d/%m/%Y %H:%M:%S')}."
-
-        ExecucaoProcesso.objects.create(
-            processo=processo,
-            status="SUCESSO",
-            saida=saida,
-            resumo=processo.descricao[:200]
-        )
-
-        processo.data_execucao_agendada = None
-        processo.save()
-
-    time.sleep(60)
+    # Envia e-mail
+    if processo.email_alerta:
+        try:
+            enviar_email_execucao(
+                destinatario=processo.email_alerta,
+                assunto=f"[MusicFlow] Execução de {processo.nome}",
+                mensagem=saida
+            )
+            print(">> E-mail enviado com sucesso.", flush=True)
+        except Exception as e:
+            print(f"Erro ao enviar e-mail: {e}", flush=True)

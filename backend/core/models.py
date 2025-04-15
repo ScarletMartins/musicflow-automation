@@ -10,6 +10,7 @@ class ProcessoAutomatizado(models.Model):
     criado_em = models.DateTimeField(auto_now_add=True)
     atualizado_em = models.DateTimeField(auto_now=True)
     criado_por = models.ForeignKey(User, on_delete=models.CASCADE)
+    email_alerta = models.EmailField(blank=True, null=True)
     data_execucao_agendada = models.DateTimeField(
         null=True,
         blank=True,

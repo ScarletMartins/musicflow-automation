@@ -56,6 +56,12 @@ export default function Register() {
             Cadastrar
           </button>
         </form>
+        <p className="text-sm text-center mt-4">
+          Já tem conta?{" "}
+          <a href="/" className="text-blue-800 underline hover:text-blue-600">
+            Entre aqui
+          </a>
+        </p>
 
         {mensagem && <p className="text-sm text-center text-red-600 mt-4">{mensagem}</p>}
       </div>

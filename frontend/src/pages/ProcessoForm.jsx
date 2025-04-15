@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAxiosAuth } from "../api/axiosInstance";
+import { Info } from "lucide-react";
 
 export default function ProcessoForm() {
   const { id } = useParams();
@@ -13,6 +14,7 @@ export default function ProcessoForm() {
     comando: "",
     ativo: true,
     data_execucao_agendada: "",
+    email_alerta: "",
   });
   const [mensagem, setMensagem] = useState("");
 
@@ -40,7 +42,7 @@ export default function ProcessoForm() {
         await axiosAuth.put(`/processos/${id}/`, form);
         setMensagem("Processo atualizado com sucesso!");
       } else {
-        await axiosAuth.post("processos", form);
+        await axiosAuth.post("/processos/", form);
         setMensagem("Processo criado com sucesso!");
       }
       setTimeout(() => navigate("/processos"), 1000);
@@ -104,6 +106,25 @@ export default function ProcessoForm() {
           className="w-full border px-3 py-2 rounded"
           required={false}
         />
+        <div className="relative">
+        <label className="flex items-center gap-1 mb-1 text-sm font-medium text-gray-700">
+          E-mail para notificação (opcional)
+          <span
+            className="group relative cursor-pointer"
+            title="Você pode informar um e-mail para receber notificações sobre a execução do processo."
+          >
+            <Info className="w-4 h-4 text-blue-600 group-hover:text-blue-800" />
+          </span>
+        </label>
+        <input
+          type="email"
+          name="email_alerta"
+          value={form.email_alerta}
+          onChange={handleChange}
+          className="w-full border px-3 py-2 rounded focus:outline-none focus:ring focus:ring-blue-300"
+          placeholder="exemplo@email.com"
+        />
+      </div>
         <button
           type="submit"
           className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
