@@ -29,7 +29,7 @@ class ExecucaoProcesso(models.Model):
         ('FALHA', 'Falha')
     ])
     saida = models.TextField(blank=True)
-    resumo = models.CharField(max_length=200, blank=True)
+    resumo = models.CharField(max_length=1000, blank=True)
 
     def __str__(self):
         return f"{self.processo.nome} - {self.data_execucao.strftime('%d/%m/%Y %H:%M')}"

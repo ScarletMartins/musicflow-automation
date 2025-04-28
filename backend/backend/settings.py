@@ -14,6 +14,7 @@ DEBUG = config("DEBUG", default=True, cast=bool)
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="").split(",")
 
+DEFAULT_CHARSET = 'utf-8'
 
 # Application definition
 

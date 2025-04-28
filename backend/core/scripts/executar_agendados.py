@@ -24,6 +24,7 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
+
 def executar_agendados():
     logging.info(">> Iniciando verificação de processos agendados...")
     agora = timezone.now()

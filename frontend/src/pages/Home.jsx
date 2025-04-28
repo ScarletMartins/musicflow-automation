@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAxiosAuth } from "../api/axiosInstance";
 import { FolderCog, Play, Pause, ListChecks, PlusCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import ChatBot from "../components/ChatBot";
 
 export default function Home() {
   const axiosAuth = useAxiosAuth();
@@ -70,6 +71,9 @@ export default function Home() {
 
       <div className="mt-8 text-sm text-gray-600 dark:text-gray-300">
         Último processo criado: <strong>{ultimo}</strong>
+      </div>
+      <div className="mt-12">
+        <ChatBot />
       </div>
     </div>
   );

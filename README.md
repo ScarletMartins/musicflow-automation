@@ -1,6 +1,11 @@
+![CI/CD](https://github.com/ScarletMartins/musicflow-automation/actions/workflows/ci-cd.yml/badge.svg)
+![Vercel](https://img.shields.io/badge/deploy-vercel-blue?logo=vercel)
+![Render](https://img.shields.io/badge/deploy-render-blue?logo=render)
+![Python](https://img.shields.io/badge/python-3.12-blue?logo=python)
+
 # MusicFlow Automation
 
-**MusicFlow Automation** é uma aplicação web desenvolvida como parte do Projeto Integrador, voltada para a automação de processos internos. A ferramenta permite o gerenciamento de execuções agendadas, visualização de histórico, e envio de alertas automáticos por e-mail.
+**MusicFlow Automation** é uma aplicação web desenvolvida como parte do Projeto Integrador, voltada para a automação de processos internos. A ferramenta permite o gerenciamento de execuções agendadas, visualização de histórico, execução de scripts reais, e envio de alertas automáticos por e-mail.
 
 ---
 
@@ -11,6 +16,7 @@ Oferecer uma interface web simples e funcional para controle de processos automa
 - Registro de processos
 - Agendamento de execuções
 - Disparo automático via cron
+- Execução real de comandos no servidor
 - Notificação por e-mail
 - Visualização em histórico
 
@@ -42,10 +48,10 @@ Atenção: o repositório foi tornado público temporariamente apenas para fins 
 ### 📧 Teste com Notificação por E-mail
 
 O professor pode:
-- Criar um processo com **execução agendada para 1 a 2 minutos no futuro**
-- O sistema disparará automaticamente a execução simulada
-- Será enviado um **e-mail com a notificação da execução**
-- A execução poderá ser consultada em tempo real na **tela de Histórico**
+- Criar um processo com **execução agendada para 1 a 2 minutos no futuro**.
+- O sistema disparará automaticamente a execução simulada.
+- Será enviado um **e-mail com a notificação da execução**.
+- A execução poderá ser consultada em tempo real na **tela de Histórico**.
 
 > Isso simula o funcionamento real de um agendador de tarefas automatizadas com feedback por e-mail.
 
@@ -58,6 +64,7 @@ O professor pode:
 - API REST protegida com JWT
 - Banco de dados PostgreSQL (Render)
 - Scripts agendados com cronjob (cron-job.org)
+- Execução real de comandos com subprocess
 - Configurações por variáveis de ambiente (`python-decouple`)
 
 ### Frontend (React + Vite)
@@ -71,20 +78,22 @@ O professor pode:
 
 ## 🔁 Pipeline CI/CD
 
-- **Backend (Render)**: deploy contínuo via `render.yaml`
-- **Frontend (Vercel)**: deploy automático com push na branch principal
-- **Execuções agendadas**: disparadas por [cron-job.org](https://cron-job.org)
+- **GitHub Actions**: execução automática de testes backend (`python manage.py test`) em cada `push` ou `pull request` na branch principal (`main`).
+- **Backend (Render)**: deploy contínuo via `render.yaml`.
+- **Frontend (Vercel)**: deploy automático com push na branch principal.
+- **Execuções agendadas**: disparadas por [cron-job.org](https://cron-job.org).
 
 ---
 
 ## ☁️ Infraestrutura em Nuvem
 
-| Componente         | Plataforma        |
-|--------------------|-------------------|
-| Backend (API)      | Render            |
-| Frontend (SPA)     | Vercel            |
-| Banco de Dados     | PostgreSQL (Render) |
-| Agendamento        | cron-job.org      |
+| Componente         | Plataforma           |
+|--------------------|-----------------------|
+| Backend (API)      | Render                 |
+| Frontend (SPA)     | Vercel                 |
+| Banco de Dados     | PostgreSQL (Render)    |
+| Agendamento        | cron-job.org           |
+| CI/CD              | GitHub Actions         |
 
 ---
 
@@ -92,13 +101,14 @@ O professor pode:
 
 - Acesso via navegador com layout responsivo
 - Backend com persistência relacional (PostgreSQL)
-- CI/CD funcionando com publicação automática
+- CI/CD funcionando com testes automatizados e publicação contínua
 - Variáveis de ambiente isoladas
 - Cadastro de usuários, login, e ciclo completo de autenticação
 - Logs e notificações enviados por e-mail
 - Tela de CRUD completo para processos
 - Funcionalidade mestre-detalhe: processo com execuções relacionadas
 - Execução programada de processos com alertas
+- Execução real de comandos do sistema via agendamento
 
 ---
 
@@ -110,5 +120,5 @@ O professor pode:
 
 ## ✅ Observação Final
 
-O repositório foi revisado para não conter nenhuma informação sensível exposta. Os dados foram removidos do histórico e A variáveis reais estão configuradas diretamente nas plataformas (Render/Vercel).
-
+O repositório foi revisado para não conter nenhuma informação sensível exposta.  
+As variáveis reais estão configuradas diretamente nas plataformas (Render/Vercel).
