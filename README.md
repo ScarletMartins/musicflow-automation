@@ -22,6 +22,18 @@ Oferecer uma interface web simples e funcional para controle de processos automa
 
 ---
 
+## 🤖 Funcionalidade de Inteligência Artificial
+
+- Integração com o **Dialogflow Messenger** para atendimento automático no frontend.
+- Chatbot configurado para orientar usuários sobre a criação, edição e inativação de processos.
+- Intents personalizadas criadas no Dialogflow para atender às dúvidas frequentes dos usuários.
+- Mensagem de boas-vindas configurada e fallback amigável para melhorar a experiência de conversação.
+- Integração feita diretamente no frontend utilizando React + Vite, sem necessidade de backend intermediário.
+
+> O chatbot atende diretamente no canto inferior direito da aplicação e está disponível nas página principais.
+
+---
+
 ### 📁 Repositório Git
 
 Este repositório contém o código-fonte do backend e frontend, além dos arquivos de configuração de deploy e CI/CD.  

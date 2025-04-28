@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAxiosAuth } from "../api/axiosInstance";
 import { FolderCog, Trash2, Play, Pause, Pencil, PlusCircle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import ConfirmModal from "../components/ConfirmModal";
+import ChatBot from "../components/ChatBot";
 
 export default function Processos() {
   const axiosAuth = useAxiosAuth();
@@ -172,6 +172,9 @@ export default function Processos() {
           </div>
         </div>
       )}
+      <div className="mt-12">
+                    <ChatBot />
+      </div>
     </div>
   );
 }

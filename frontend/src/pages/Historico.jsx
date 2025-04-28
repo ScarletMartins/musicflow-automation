@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAxiosAuth } from "../api/axiosInstance";
 import { Clock, Terminal, X } from "lucide-react";
+import ChatBot from "../components/ChatBot";
 
 export default function Historico() {
   const axiosAuth = useAxiosAuth();
@@ -97,6 +98,9 @@ export default function Historico() {
           </div>
         </div>
       )}
+      <div className="mt-12">
+              <ChatBot />
+      </div>
     </div>
   );
 }
