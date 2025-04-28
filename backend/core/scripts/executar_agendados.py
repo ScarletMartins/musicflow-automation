@@ -1,8 +1,11 @@
 import sys
 import os
 import django
+import logging
+import subprocess
 from django.utils import timezone
 
+# Setup do Django
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(BASE_DIR)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
@@ -11,58 +14,69 @@ django.setup()
 from core.models import ProcessoAutomatizado, ExecucaoProcesso
 from core.utils.email import enviar_email_execucao
 
-print(">> Executando verificação de processos agendados...", flush=True)
+# Setup do Logging
+LOG_DIR = os.path.join(BASE_DIR, "logs")
+os.makedirs(LOG_DIR, exist_ok=True)
 
-agora = timezone.now()
-
-processos = ProcessoAutomatizado.objects.filter(
-    ativo=True,
-    data_execucao_agendada__lte=agora
+logging.basicConfig(
+    filename=os.path.join(LOG_DIR, "executar_agendados.log"),
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
-for processo in processos:
-    print(f"Executando: {processo.nome}", flush=True)
+def executar_agendados():
+    logging.info(">> Iniciando verificação de processos agendados...")
+    agora = timezone.now()
 
-    try:
-        # Simula execução com sucesso
-        saida = f"Processo '{processo.nome}' executado automaticamente em {agora.strftime('%d/%m/%Y %H:%M:%S')}."
+    processos = ProcessoAutomatizado.objects.filter(
+        ativo=True,
+        data_execucao_agendada__lte=agora
+    )
 
-        ExecucaoProcesso.objects.create(
-            processo=processo,
-            status="SUCESSO",
-            saida=saida,
-            resumo=processo.descricao[:200]
-        )
+    for processo in processos:
+        logging.info(f"Executando: {processo.nome}")
 
-        processo.data_execucao_agendada = None
-        processo.save()
-
-        if processo.email_alerta:
-            enviar_email_execucao(
-                destinatario=processo.email_alerta,
-                assunto=f"[MusicFlow] Execução de {processo.nome}",
-                mensagem=saida
-            )
-            print(">> E-mail enviado com sucesso.", flush=True)
-
-    except Exception as e:
-        erro_msg = f"Erro ao executar o processo '{processo.nome}': {str(e)}"
-        print(erro_msg, flush=True)
-
-        ExecucaoProcesso.objects.create(
-            processo=processo,
-            status="FALHA",
-            saida=erro_msg,
-            resumo=processo.descricao[:200]
-        )
-
-        if processo.email_alerta:
+        try:
             try:
-                enviar_email_execucao(
-                    destinatario=processo.email_alerta,
-                    assunto=f"[MusicFlow] Falha na execução de {processo.nome}",
-                    mensagem=erro_msg
+                resultado = subprocess.run(
+                    processo.comando,
+                    shell=True,
+                    check=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True
                 )
-                print(">> E-mail de falha enviado com sucesso.", flush=True)
-            except Exception as e2:
-                print(f"Erro ao enviar e-mail de falha: {e2}", flush=True)
+                saida = resultado.stdout
+                status_execucao = "SUCESSO"
+            except subprocess.CalledProcessError as e:
+                saida = e.stderr or str(e)
+                status_execucao = "FALHA"
+
+            ExecucaoProcesso.objects.create(
+                processo=processo,
+                status=status_execucao,
+                saida=saida,
+                resumo=processo.descricao[:200]
+            )
+
+        except Exception as e:
+            erro_msg = f"Erro ao executar o processo '{processo.nome}': {str(e)}"
+            logging.error(erro_msg)
+
+            ExecucaoProcesso.objects.create(
+                processo=processo,
+                status="FALHA",
+                saida=erro_msg,
+                resumo=processo.descricao[:200]
+            )
+
+            if processo.email_alerta:
+                try:
+                    enviar_email_execucao(
+                        destinatario=processo.email_alerta,
+                        assunto=f"[MusicFlow] Falha na execução de {processo.nome}",
+                        mensagem=erro_msg
+                    )
+                    logging.info(f"E-mail de falha enviado para {processo.email_alerta}.")
+                except Exception as e2:
+                    logging.error(f"Erro ao enviar e-mail de falha: {e2}")
