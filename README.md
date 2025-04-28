@@ -113,7 +113,7 @@ O professor pode:
 
 - Acesso via navegador com layout responsivo
 - Backend com persistência relacional (PostgreSQL)
-- CI/CD funcionando com testes automatizados e publicação contínua
+- CI/CD funcionando com testes automatizados e publicação contínua2
 - Variáveis de ambiente isoladas
 - Cadastro de usuários, login, e ciclo completo de autenticação
 - Logs e notificações enviados por e-mail
