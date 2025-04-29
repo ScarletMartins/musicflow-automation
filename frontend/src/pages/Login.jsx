@@ -39,6 +39,7 @@ export default function Login() {
   };
 
   const handleGoogleSuccess = async (credentialResponse) => {
+    console.log("GOOGLE LOGIN:", credentialResponse);
     try {
       credentialResponse.preventDefault?.();
       const { credential: access_token } = credentialResponse;
@@ -92,6 +93,7 @@ export default function Login() {
           <GoogleLogin
             onSuccess={handleGoogleSuccess}
             onError={() => setMensagem("Erro no login com Google")}
+            ux_mode="popup"
             width="300"
             text="signin_with"
             shape="rectangular"
