@@ -11,6 +11,9 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from decouple import config
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+from dj_rest_auth.registration.views import SocialLoginView
 
 
 @api_view(['GET'])
@@ -97,3 +100,16 @@ def executar_agendados_view(request):
             resultados.append(f"{processo.nome}: Executado sem email.")
 
     return JsonResponse({"mensagem": "Execuções processadas", "resultados": resultados})
+
+
+class GoogleLogin(SocialLoginView):
+    adapter_class = GoogleOAuth2Adapter
+
+    def post(self, request, *args, **kwargs):
+        id_token = request.data.get("access_token")
+        if not id_token:
+            return Response({"error": "Token ausente."}, status=status.HTTP_400_BAD_REQUEST)
+
+        request.data["id_token"] = id_token
+        request.data["access_token"] = id_token
+        return super().post(request, *args, **kwargs)
