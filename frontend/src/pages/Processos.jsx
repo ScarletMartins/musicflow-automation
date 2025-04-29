@@ -3,17 +3,17 @@ import { useAxiosAuth } from "../api/axiosInstance";
 import { FolderCog, Trash2, Play, Pause, Pencil, PlusCircle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import ChatBot from "../components/ChatBot";
+import { useAuth } from "../context/AuthContext";
 
 export default function Processos() {
   const axiosAuth = useAxiosAuth();
+  const { isAuthenticated } = useAuth();
   const [processos, setProcessos] = useState([]);
   const [mensagem, setMensagem] = useState("");
-  const [mostrarModal, setMostrarModal] = useState(false);
-  const [idParaExcluir, setIdParaExcluir] = useState(null);
 
   const fetchProcessos = async () => {
     try {
-      const res = await axiosAuth.get("/processos");
+      const res = await axiosAuth.get("/processos/");
       setProcessos(res.data);
     } catch {
       setMensagem("Erro ao carregar processos.");
@@ -21,8 +21,10 @@ export default function Processos() {
   };
 
   useEffect(() => {
-    fetchProcessos();
-  }, []);
+    if (isAuthenticated) {
+      fetchProcessos();
+    }
+  }, [isAuthenticated]);
 
   const location = useLocation();
   const filtro = new URLSearchParams(location.search).get("filtro");
