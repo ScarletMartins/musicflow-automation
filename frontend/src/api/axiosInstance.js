@@ -32,7 +32,7 @@ export const useAxiosAuth = () => {
 
         if (refresh) {
           try {
-            const res = await axios.post(`${BASE_URL}/api/token/refresh/`, {
+            const res = await axios.post(`${BASE_URL}token/refresh/`, {
               refresh,
             });
 
