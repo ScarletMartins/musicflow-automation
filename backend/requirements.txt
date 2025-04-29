@@ -2,10 +2,14 @@ annotated-types==0.7.0
 anyio==4.9.0
 asgiref==3.8.1
 certifi==2025.4.26
+cffi==1.17.1
 charset-normalizer==3.4.1
 colorama==0.4.6
+cryptography==44.0.2
 distro==1.9.0
+dj-rest-auth==7.0.1
 Django==5.1.7
+django-allauth==65.7.0
 django-cors-headers==4.7.0
 djangorestframework==3.15.2
 djangorestframework_simplejwt==5.5.0
@@ -21,6 +25,7 @@ openai==1.76.0
 packaging==24.2
 pluggy==1.5.0
 psycopg2-binary==2.9.10
+pycparser==2.22
 pydantic==2.11.3
 pydantic_core==2.33.1
 PyJWT==2.9.0
