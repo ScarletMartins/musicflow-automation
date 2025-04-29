@@ -5,8 +5,6 @@ import ThemeToggle from "../components/ThemeToggle";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 
-console.log("Google Client ID:", import.meta.env.VITE_GOOGLE_CLIENT_ID);
-
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -42,12 +40,13 @@ export default function Login() {
 
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
+      credentialResponse.preventDefault?.();
       const { credential: access_token } = credentialResponse;
-
+  
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/google/`, {
         access_token,
       });
-
+  
       login(res.data.access, res.data.refresh);
       navigate("/home");
     } catch (err) {
