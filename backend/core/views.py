@@ -106,15 +106,14 @@ def executar_agendados_view(request):
 class GoogleLogin(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
 
-    def post(self, request: Request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         id_token = request.data.get("access_token")
         if not id_token:
             return Response({"error": "Token ausente."}, status=status.HTTP_400_BAD_REQUEST)
 
-        data = request.data.copy() if isinstance(request.data, QueryDict) else dict(request.data)
-        data["id_token"] = id_token
-        data["access_token"] = id_token
-
-        request._full_data = data
+        mutable_data = request.data.copy()
+        mutable_data["id_token"] = id_token
+        mutable_data["access_token"] = id_token
+        request._full_data = mutable_data
 
         return super().post(request, *args, **kwargs)
