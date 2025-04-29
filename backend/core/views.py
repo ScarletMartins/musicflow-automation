@@ -107,7 +107,7 @@ class GoogleLogin(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
 
     def post(self, request, *args, **kwargs):
-        id_token = request.data.get("access_token")
+        id_token = request.data.get("credential")
         if not id_token:
             return Response({"error": "Token ausente."}, status=status.HTTP_400_BAD_REQUEST)
 
