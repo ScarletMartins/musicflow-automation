@@ -40,17 +40,13 @@ export default function Login() {
   };
 
   const handleGoogleSuccess = async (credentialResponse) => {
-    console.log("GOOGLE LOGIN:", credentialResponse);
-  
     try {
-      const { credential: access_token } = credentialResponse;
-  
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/google/`,
-        { access_token }
+        {
+          credential: credentialResponse.credential
+        }
       );
-  
-      console.log("RESPOSTA DO BACKEND:", res.data);
   
       login(res.data.access, res.data.refresh);
       navigate("/home");
