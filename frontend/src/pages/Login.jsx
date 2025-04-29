@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import ThemeToggle from "../components/ThemeToggle";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import qs from "qs";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -40,13 +41,19 @@ export default function Login() {
 
   const handleGoogleSuccess = async (credentialResponse) => {
     console.log("GOOGLE LOGIN:", credentialResponse);
+  
     try {
-      credentialResponse.preventDefault?.();
       const { credential: access_token } = credentialResponse;
   
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/google/`, {
-        access_token,
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/google/`,
+        qs.stringify({ access_token }),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
   
       login(res.data.access, res.data.refresh);
       navigate("/home");
