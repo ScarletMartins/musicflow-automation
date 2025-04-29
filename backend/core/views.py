@@ -16,7 +16,6 @@ from dj_rest_auth.registration.views import SocialLoginView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def status_view(request):
@@ -47,6 +46,12 @@ class ProcessoViewSet(viewsets.ModelViewSet):
     queryset = ProcessoAutomatizado.objects.all().order_by('-criado_em')
     serializer_class = ProcessoSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def list(self, request, *args, **kwargs):
+        print("== DEBUG ProcessoViewSet ==")
+        print("Authorization header:", request.META.get("HTTP_AUTHORIZATION"))
+        print("Usuário autenticado:", request.user)
+        return super().list(request, *args, **kwargs)
 
     def perform_create(self, serializer):
         serializer.save(criado_por=self.request.user)

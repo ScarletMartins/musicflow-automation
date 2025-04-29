@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 const BASE_URL = import.meta.env.VITE_API_URL.replace(/\/$/, "");
 
 export const useAxiosAuth = () => {
-  const { accessToken, login, logout } = useAuth();
+  const { login, logout } = useAuth();
 
   const instance = axios.create({
     baseURL: BASE_URL,
@@ -13,12 +13,16 @@ export const useAxiosAuth = () => {
     },
   });
 
-  instance.interceptors.request.use((config) => {
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-    return config;
-  });
+  instance.interceptors.request.use(
+    (config) => {
+      const token = localStorage.getItem("access_token");
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+    },
+    (error) => Promise.reject(error)
+  );
 
   instance.interceptors.response.use(
     (response) => response,
@@ -28,7 +32,7 @@ export const useAxiosAuth = () => {
       if (error.response?.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
 
-        const refresh = localStorage.getItem("refresh");
+        const refresh = localStorage.getItem("refresh_token");
 
         if (refresh) {
           try {
@@ -38,7 +42,7 @@ export const useAxiosAuth = () => {
 
             const newAccess = res.data.access;
 
-            localStorage.setItem("access", newAccess);
+            localStorage.setItem("access_token", newAccess);
             login(newAccess, refresh);
 
             originalRequest.headers.Authorization = `Bearer ${newAccess}`;
@@ -58,3 +62,4 @@ export const useAxiosAuth = () => {
 
   return instance;
 };
+  
