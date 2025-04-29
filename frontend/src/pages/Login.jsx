@@ -47,13 +47,10 @@ export default function Login() {
   
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/google/`,
-        qs.stringify({ access_token }),
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
+        { access_token }
       );
+  
+      console.log("RESPOSTA DO BACKEND:", res.data);
   
       login(res.data.access, res.data.refresh);
       navigate("/home");

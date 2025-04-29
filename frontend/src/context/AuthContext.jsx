@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("refresh", refresh);
     setAccessToken(access);
     setRefreshToken(refresh);
+    setIsAuthenticated(true);
   };
 
   const logout = () => {
@@ -33,6 +34,7 @@ export const AuthProvider = ({ children }) => {
 
     if (storedAccess) {
       setAccessToken(storedAccess);
+      setIsAuthenticated(true);
     }
 
     if (storedRefresh) {

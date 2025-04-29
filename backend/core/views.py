@@ -12,8 +12,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from decouple import config
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
-from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
+from rest_framework.request import Request
+from django.http import QueryDict
 
 
 @api_view(['GET'])
@@ -105,13 +106,15 @@ def executar_agendados_view(request):
 class GoogleLogin(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: Request, *args, **kwargs):
         id_token = request.data.get("access_token")
         if not id_token:
             return Response({"error": "Token ausente."}, status=status.HTTP_400_BAD_REQUEST)
 
-        request.data._mutable = True
-        request.data["id_token"] = id_token
-        request.data["access_token"] = id_token
+        data = request.data.copy() if isinstance(request.data, QueryDict) else dict(request.data)
+        data["id_token"] = id_token
+        data["access_token"] = id_token
+
+        request._full_data = data
 
         return super().post(request, *args, **kwargs)
