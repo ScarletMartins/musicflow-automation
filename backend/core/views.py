@@ -110,6 +110,8 @@ class GoogleLogin(SocialLoginView):
         if not id_token:
             return Response({"error": "Token ausente."}, status=status.HTTP_400_BAD_REQUEST)
 
+        request.data._mutable = True
         request.data["id_token"] = id_token
         request.data["access_token"] = id_token
+
         return super().post(request, *args, **kwargs)
