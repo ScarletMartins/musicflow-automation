@@ -48,6 +48,8 @@ export default function Login() {
         }
       );
   
+      console.log("RESPOSTA DO BACKEND:", res.data);
+  
       login(res.data.access, res.data.refresh);
       navigate("/home");
     } catch (err) {
