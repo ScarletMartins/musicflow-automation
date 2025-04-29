@@ -13,8 +13,8 @@ from django.utils import timezone
 from decouple import config
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from dj_rest_auth.registration.views import SocialLoginView
-from rest_framework.request import Request
-from django.http import QueryDict
+from rest_framework_simplejwt.tokens import RefreshToken
+
 
 
 @api_view(['GET'])
@@ -116,4 +116,14 @@ class GoogleLogin(SocialLoginView):
         mutable_data["access_token"] = id_token
         request._full_data = mutable_data
 
-        return super().post(request, *args, **kwargs)
+        response = super().post(request, *args, **kwargs)
+
+        if response.status_code == 200 and response.data.get('key'):
+            user = self.request.user
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                "access": str(refresh.access_token),
+                "refresh": str(refresh),
+            })
+
+        return response
