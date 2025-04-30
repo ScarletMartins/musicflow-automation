@@ -1,21 +1,18 @@
-import hashlib
-import sys
 import logging
+from datetime import datetime
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
 
-def verificar_integridade(caminho="db.sqlite3"):
-    try:
-        with open(caminho, "rb") as f:
-            hash_value = hashlib.sha256(f.read()).hexdigest()
-        logging.info(f"Hash gerado com sucesso: {hash_value}")
-    except FileNotFoundError:
-        logging.error("Arquivo não encontrado.")
-        sys.exit(1)
-    except Exception as e:
-        logging.error(f"Erro inesperado: {e}")
-        sys.exit(1)
+def verificar_integridade():
+    hash_simulado = f"simulacao-{datetime.now().strftime('%H%M%S')}-hash123abc"
+
+    logging.info(f"Hash simulado: {hash_simulado}")
+    return {
+        "status": "ok",
+        "mensagem": "Verificação simulada concluída.",
+        "hash": hash_simulado
+    }
 
 
 if __name__ == "__main__":
