@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useAxiosAuth } from "../api/axiosInstance";
 import { Info } from "lucide-react";
+import ChatBot from "../components/ChatBot";
 
 export default function ProcessoForm() {
   const { id } = useParams();
@@ -260,7 +261,7 @@ export default function ProcessoForm() {
       </div>
       </form>
       <div className="mt-12">
-                          <ChatBot />
+          <ChatBot />
       </div>
     </div>
   );
