@@ -16,3 +16,7 @@ def executar_backup():
     except Exception as e:
         print(">> ERRO no backup:", e)
         return {"status": "erro", "mensagem": str(e)}
+
+
+if __name__ == "__main__":
+    executar_backup()

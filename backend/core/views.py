@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from rest_framework import status, viewsets, permissions
 from .models import ProcessoAutomatizado, ExecucaoProcesso
 from .serializers import ProcessoSerializer, ExecucaoProcessoSerializer
+from core.scripts.executar_agendados import executar_agendados
 from core.utils.email import enviar_email_execucao
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -69,48 +70,9 @@ def executar_agendados_view(request):
     if token != token_esperado:
         return JsonResponse({"error": "Token inválido"}, status=403)
 
-    agora = timezone.now()
+    executar_agendados()
 
-    processos = ProcessoAutomatizado.objects.filter(
-        ativo=True,
-        data_execucao_agendada__lte=agora
-    )
-
-    resultados = []
-
-    for processo in processos:
-        saida = f"Processo '{processo.nome}' executado automaticamente em {agora.strftime('%d/%m/%Y %H:%M:%S')}."
-
-        ExecucaoProcesso.objects.create(
-            processo=processo,
-            status="SUCESSO",
-            saida=saida,
-            resumo=processo.descricao[:200]
-        )
-
-        processo.data_execucao_agendada = None
-        processo.save()
-
-        if processo.email_alerta:
-            try:
-                mensagem = f"""
-                    <h2>Execução Agendada Concluída</h2>
-                    <p>O processo <strong>{processo.nome}</strong> foi executado automaticamente em {agora.strftime('%d/%m/%Y %H:%M:%S')}.</p>
-                    <p><strong>Status:</strong> SUCESSO</p>
-                    <p><strong>Resumo:</strong> {processo.descricao[:200]}</p>
-                """
-                enviar_email_execucao(
-                    destinatario=processo.email_alerta,
-                    assunto=f"[MusicFlow] Execução de {processo.nome}",
-                    mensagem_html=mensagem
-                )
-                resultados.append(f"{processo.nome}: Email enviado.")
-            except Exception as e:
-                resultados.append(f"{processo.nome}: Erro ao enviar email: {e}")
-        else:
-            resultados.append(f"{processo.nome}: Executado sem email.")
-
-    return JsonResponse({"mensagem": "Execuções processadas", "resultados": resultados})
+    return JsonResponse({"mensagem": "Execuções simuladas com subprocess foram processadas."})
 
 
 class GoogleLogin(SocialLoginView):

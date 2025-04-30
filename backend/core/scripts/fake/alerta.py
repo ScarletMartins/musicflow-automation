@@ -11,3 +11,7 @@ def enviar_alerta():
 
     print(">> ALERTA:", log["mensagem"])
     return {"status": "simulado", "log": log}
+
+
+if __name__ == "__main__":
+    enviar_alerta()

@@ -10,3 +10,7 @@ def gerar_relatorio():
 
     print(">> RELATÓRIO gerado com sucesso.")
     return {"status": "ok", "relatorio": relatorio}
+
+
+if __name__ == "__main__":
+    gerar_relatorio()

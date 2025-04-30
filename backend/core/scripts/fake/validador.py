@@ -11,3 +11,7 @@ def verificar_integridade(caminho="db.sqlite3"):
     except FileNotFoundError:
         print(">> ERRO: Arquivo não encontrado.")
         return {"status": "erro", "mensagem": "Arquivo não encontrado"}
+
+
+if __name__ == "__main__":
+    verificar_integridade()
