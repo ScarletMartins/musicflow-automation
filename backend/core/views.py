@@ -50,9 +50,6 @@ class ProcessoViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def list(self, request, *args, **kwargs):
-        print("== DEBUG ProcessoViewSet ==")
-        print("Authorization header:", request.META.get("HTTP_AUTHORIZATION"))
-        print("Usuário autenticado:", request.user)
         return super().list(request, *args, **kwargs)
 
     def perform_create(self, serializer):
