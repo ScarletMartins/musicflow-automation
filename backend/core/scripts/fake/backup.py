@@ -1,19 +1,21 @@
-import logging
+import os
+import shutil
 from datetime import datetime
-
-logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+import logging
 
 
 def executar_backup():
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    nome_backup_simulado = f"backup_simulado_{timestamp}.sqlite3"
+    origem = "db.sqlite3"
+    destino = f"backup/backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}.sqlite3"
+    os.makedirs("backup", exist_ok=True)
 
-    logging.info(f"Backup simulado gerado com sucesso: {nome_backup_simulado}")
-    return {
-        "status": "ok",
-        "arquivo": nome_backup_simulado,
-        "mensagem": "Backup simulado com sucesso."
-    }
+    try:
+        shutil.copyfile(origem, destino)
+        logging.info(f"BACKUP realizado: {destino}")
+        return {"status": "ok", "arquivo": destino}
+    except Exception as e:
+        logging.error(f"Erro ao realizar backup: {e}")
+        return {"status": "erro", "mensagem": str(e)}
 
 
 if __name__ == "__main__":
