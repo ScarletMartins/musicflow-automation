@@ -99,11 +99,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
 
-CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = [
+    "authorization",
     "accept",
     "accept-encoding",
-    "authorization",
     "content-type",
     "dnt",
     "origin",
@@ -111,6 +110,8 @@ CORS_ALLOW_HEADERS = [
     "x-csrftoken",
     "x-requested-with",
 ]
+
+CORS_EXPOSE_HEADERS = ["Authorization"]
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -208,7 +209,8 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": True,
-    "AUTH_HEADER_TYPES": ("JWT",),
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
 }
 
 if not SOCIAL_AUTH_GOOGLE_OAUTH2_KEY or not SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET:
