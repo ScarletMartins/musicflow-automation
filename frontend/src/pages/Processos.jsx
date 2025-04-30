@@ -11,6 +11,7 @@ export default function Processos() {
   const [processos, setProcessos] = useState([]);
   const [mensagem, setMensagem] = useState("");
   const [mostrarModal, setMostrarModal] = useState(false);
+  const [idParaExcluir, setIdParaExcluir] = useState(null);
 
   const fetchProcessos = async () => {
     try {
