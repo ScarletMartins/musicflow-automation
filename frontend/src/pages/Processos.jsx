@@ -10,6 +10,7 @@ export default function Processos() {
   const { isAuthenticated } = useAuth();
   const [processos, setProcessos] = useState([]);
   const [mensagem, setMensagem] = useState("");
+  const [mostrarModal, setMostrarModal] = useState(false);
 
   const fetchProcessos = async () => {
     try {

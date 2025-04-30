@@ -13,16 +13,16 @@ export const useAxiosAuth = () => {
     },
   });
 
-  instance.interceptors.request.use(
-    (config) => {
-      const token = localStorage.getItem("access_token");
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-      return config;
-    },
-    (error) => Promise.reject(error)
-  );
+  instance.interceptors.request.use((config) => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+      console.log("🔐 TOKEN ENVIADO:", config.headers.Authorization);
+    } else {
+      console.warn("⚠️ Nenhum access_token encontrado no localStorage");
+    }
+    return config;
+  });
 
   instance.interceptors.response.use(
     (response) => response,
