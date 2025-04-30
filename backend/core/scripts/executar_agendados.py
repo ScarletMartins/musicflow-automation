@@ -36,6 +36,7 @@ def executar_agendados():
 
     for processo in processos:
         logging.info(f"Executando: {processo.nome}")
+        relatorio_path = None
 
         try:
             try:
@@ -52,6 +53,11 @@ def executar_agendados():
             except subprocess.CalledProcessError as e:
                 saida = e.stderr or str(e)
                 status_execucao = "FALHA"
+
+            if "RELATÓRIO gerado:" in saida:
+                for linha in saida.splitlines():
+                    if linha.startswith(">> RELATÓRIO gerado:"):
+                        relatorio_path = linha.split(":", 1)[-1].strip()
 
             ExecucaoProcesso.objects.create(
                 processo=processo,
@@ -70,7 +76,12 @@ def executar_agendados():
                         f"📌 Status: {status_execucao}\n\n"
                         f"💬 Saída:\n{saida}"
                     )
-                    enviar_email_execucao(processo.email_alerta, assunto, mensagem)
+                    enviar_email_execucao(
+                        destinatario=processo.email_alerta,
+                        assunto=assunto,
+                        mensagem=mensagem,
+                        anexo_path=relatorio_path
+                    )
                     logging.info(f"E-mail enviado para {processo.email_alerta}.")
                 except Exception as e2:
                     logging.error(f"Erro ao enviar e-mail: {e2}")
@@ -92,10 +103,9 @@ def executar_agendados():
             if processo.email_alerta:
                 try:
                     enviar_email_execucao(
-                        processo.email_alerta,
-                        f"[MusicFlow] Falha na execução de {processo.nome}",
-                        erro_msg
+                        destinatario=processo.email_alerta,
+                        assunto=f"[MusicFlow] Execução de {processo.nome} - FALHA",
+                        mensagem=erro_msg
                     )
-                    logging.info(f"E-mail de falha enviado para {processo.email_alerta}.")
                 except Exception as e2:
                     logging.error(f"Erro ao enviar e-mail de falha: {e2}")

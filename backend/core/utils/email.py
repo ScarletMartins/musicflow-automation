@@ -1,13 +1,17 @@
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMessage
 from django.conf import settings
+import os
 
 
-def enviar_email_execucao(destinatario, assunto, mensagem_html):
-    msg = EmailMultiAlternatives(
+def enviar_email_execucao(destinatario, assunto, mensagem, anexo_path=None):
+    email = EmailMessage(
         subject=assunto,
-        body="Para visualizar este e-mail, utilize um cliente que suporte HTML.",
+        body=mensagem,
         from_email=settings.EMAIL_HOST_USER,
         to=[destinatario],
     )
-    msg.attach_alternative(mensagem_html, "text/html")
-    msg.send(fail_silently=False)
+
+    if anexo_path and os.path.exists(anexo_path):
+        email.attach_file(anexo_path)
+
+    email.send(fail_silently=False)

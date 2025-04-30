@@ -65,6 +65,8 @@ O professor pode:
 - O sistema disparará automaticamente a execução simulada.
 - Será enviado um **e-mail com a notificação da execução**.
 - A execução poderá ser consultada em tempo real na **tela de Histórico**.
+- Se o script executado gerar um arquivo de relatório, o sistema **anexará automaticamente esse relatório ao e-mail** de notificação.
+- Isso permite que o usuário visualize os resultados completos da execução, simulando casos reais de uso como backups, verificações e exportações de dados.
 
 > Isso simula o funcionamento real de um agendador de tarefas automatizadas com feedback por e-mail.
 

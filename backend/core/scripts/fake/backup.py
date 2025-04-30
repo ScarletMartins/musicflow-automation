@@ -1,6 +1,10 @@
 import os
 import shutil
+import sys
+import logging
 from datetime import datetime
+
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
 
 def executar_backup():
@@ -11,11 +15,10 @@ def executar_backup():
 
     try:
         shutil.copyfile(origem, destino)
-        print(f">> BACKUP realizado: {destino}")
-        return {"status": "ok", "arquivo": destino}
+        logging.info(f"BACKUP realizado com sucesso: {destino}")
     except Exception as e:
-        print(">> ERRO no backup:", e)
-        return {"status": "erro", "mensagem": str(e)}
+        logging.error(f"Erro ao realizar backup: {e}")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
