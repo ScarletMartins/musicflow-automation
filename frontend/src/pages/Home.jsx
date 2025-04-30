@@ -28,7 +28,7 @@ export default function Home() {
     : "—";
 
   return (
-    <div>
+    <div className="max-w-5xl mx-auto py-10 px-4">
       <h1 className="text-3xl font-bold mb-6 text-pink-950 flex items-center gap-2 dark:text-pink-200">
         <ListChecks className="w-6 h-6 text-pink-950 dark:text-pink-200" />
         Visão Geral

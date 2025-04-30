@@ -22,7 +22,7 @@ export default function Historico() {
   };
 
   return (
-    <div>
+    <div className="max-w-5xl mx-auto py-10 px-4">
       <h1 className="text-3xl font-bold mb-6 text-pink-950 dark:text-pink-200 flex items-center gap-2">
         <Clock className="w-6 h-6 text-pink-950 dark:text-pink-200" />
         Histórico de Execuções

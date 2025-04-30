@@ -24,7 +24,7 @@ function App() {
       <Route path="/" element={<HomePublic />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/faq" element={<FaqPage />} />
+      <Route path="/faq" element={<FaqPage isPublic={true} />} />
 
       <Route
         path="/home"
@@ -72,6 +72,16 @@ function App() {
           <PrivateRoute>
             <BaseLayout>
               <ProcessoForm />
+            </BaseLayout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/app/faq"
+        element={
+          <PrivateRoute>
+            <BaseLayout>
+              <FaqPage />
             </BaseLayout>
           </PrivateRoute>
         }

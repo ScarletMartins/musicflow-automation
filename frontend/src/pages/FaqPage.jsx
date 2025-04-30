@@ -1,6 +1,15 @@
 import { useState } from "react";
+import {
+  ChevronDown,
+  ChevronUp,
+  HelpCircle,
+  Zap,
+  CalendarCheck,
+  Clock,
+  Shield,
+} from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
-import { ChevronDown, ChevronUp, HelpCircle, Zap, CalendarCheck, Clock, Shield } from "lucide-react";
 
 const faqList = [
   {
@@ -29,16 +38,17 @@ const faqList = [
   },
 ];
 
-export default function FaqPage() {
+export default function FaqPage({ isPublic = false }) {
   const [openIndex, setOpenIndex] = useState(null);
+  const { isAuthenticated } = useAuth();
+  const showBackButton = isPublic && !isAuthenticated;
 
   const toggle = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-200 via-white to-pink-100 dark:from-gray-900 dark:via-slate-800 dark:to-gray-700 text-gray-800 dark:text-white px-8 py-16 relative overflow-hidden">
-
+    <div className="relative h-screen dark:bg-slate-700 text-gray-800 dark:text-white overflow-hidden">
       <div className="absolute top-10 left-10 animate-float-slow opacity-20">
         <Zap size={80} />
       </div>
@@ -52,47 +62,50 @@ export default function FaqPage() {
         <Shield size={70} />
       </div>
 
-      <header className="w-full mb-10 text-center relative z-10">
-        <h1 className="text-4xl font-bold text-pink-700 dark:text-pink-300 inline-flex items-center gap-3 justify-center">
-          <HelpCircle className="w-8 h-8" />
+      <div className="max-w-5xl mx-auto px-4 py-10 relative z-10">
+        <h1 className="text-3xl font-bold mb-6 flex items-center gap-2 text-pink-950 dark:text-pink-200">
+          <HelpCircle className="w-6 h-6" />
           Perguntas Frequentes
         </h1>
-      </header>
 
-      <div className="max-w-3xl mx-auto space-y-4 relative z-10">
-        {faqList.map((item, index) => (
-          <div
-            key={index}
-            className="border border-pink-300 dark:border-pink-600 rounded-lg overflow-hidden bg-white/50 dark:bg-slate-800/50"
-          >
-            <button
-              className="w-full flex justify-between items-center p-4 focus:outline-none hover:bg-pink-100 dark:hover:bg-slate-700 transition"
-              onClick={() => toggle(index)}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {faqList.map((item, index) => (
+            <div
+              key={index}
+              className="border border-pink-300 dark:border-pink-600 rounded-lg p-4 bg-white/50 dark:bg-slate-800/50 shadow-sm hover:shadow-md transition"
             >
-              <span className="text-lg font-medium text-left">{item.question}</span>
-              {openIndex === index ? (
-                <ChevronUp className="w-5 h-5" />
-              ) : (
-                <ChevronDown className="w-5 h-5" />
+              <button
+                className="w-full flex justify-between items-center text-left focus:outline-none"
+                onClick={() => toggle(index)}
+              >
+                <span className="text-lg font-medium">{item.question}</span>
+                {openIndex === index ? (
+                  <ChevronUp className="w-5 h-5" />
+                ) : (
+                  <ChevronDown className="w-5 h-5" />
+                )}
+              </button>
+              {openIndex === index && (
+                <div className="mt-3 text-sm text-gray-700 dark:text-gray-300">
+                  {item.answer}
+                </div>
               )}
-            </button>
-            {openIndex === index && (
-              <div className="px-4 pb-4 text-sm text-gray-700 dark:text-gray-300">
-                {item.answer}
-              </div>
-            )}
+            </div>
+          ))}
+        </div>
+
+        {showBackButton && (
+          <div className="mt-6 text-center">
+            <Link
+              to="/"
+              className="text-sm font-medium text-gray-700 dark:text-neutral-300 hover:text-pink-700 dark:hover:text-pink-300 transition"
+            >
+              ← Voltar à Página Inicial
+            </Link>
           </div>
-        ))}
+        )}
       </div>
-        
-    <div className="mt-4 text-center">
-        <Link
-        to="/"
-        className="text-sm font-medium text-gray-700 dark:text-neutral-300 hover:text-pink-700 dark:hover:text-pink-300 transition"
-        >
-        ← Voltar à Página Inicial
-        </Link>
-    </div>
+
       <style>
         {`
           @keyframes float-slow {
