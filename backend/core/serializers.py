@@ -2,8 +2,10 @@ from rest_framework import serializers
 from .models import ProcessoAutomatizado, ExecucaoProcesso
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+
 class ProcessoSerializer(serializers.ModelSerializer):
     criado_por_nome = serializers.SerializerMethodField()
+    data_execucao_agendada = serializers.DateTimeField(required=False, allow_null=True)
 
     class Meta:
         model = ProcessoAutomatizado
