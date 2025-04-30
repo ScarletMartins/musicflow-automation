@@ -93,10 +93,16 @@ def executar_agendados_view(request):
 
         if processo.email_alerta:
             try:
+                mensagem = f"""
+                    <h2>Execução Agendada Concluída</h2>
+                    <p>O processo <strong>{processo.nome}</strong> foi executado automaticamente em {agora.strftime('%d/%m/%Y %H:%M:%S')}.</p>
+                    <p><strong>Status:</strong> SUCESSO</p>
+                    <p><strong>Resumo:</strong> {processo.descricao[:200]}</p>
+                """
                 enviar_email_execucao(
                     destinatario=processo.email_alerta,
                     assunto=f"[MusicFlow] Execução de {processo.nome}",
-                    mensagem=saida
+                    mensagem_html=mensagem
                 )
                 resultados.append(f"{processo.nome}: Email enviado.")
             except Exception as e:
