@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext();
 
@@ -7,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [refreshToken, setRefreshToken] = useState(localStorage.getItem("refresh_token") || null);
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("access_token"));
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     setIsAuthenticated(!!accessToken);
@@ -18,6 +20,9 @@ export const AuthProvider = ({ children }) => {
     setAccessToken(access);
     setRefreshToken(refresh);
     setIsAuthenticated(true);
+
+    const decoded = jwtDecode(access);
+    setIsAdmin(decoded?.is_staff);
   };
 
   const logout = () => {
@@ -35,6 +40,9 @@ export const AuthProvider = ({ children }) => {
     if (storedAccess) {
       setAccessToken(storedAccess);
       setIsAuthenticated(true);
+
+      const decoded = jwtDecode(storedAccess);
+      setIsAdmin(decoded?.is_staff);
     }
 
     if (storedRefresh) {
@@ -46,7 +54,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ accessToken, refreshToken, isAuthenticated, login, logout, loading }}
+      value={{ accessToken, refreshToken, isAuthenticated, login, logout, isAdmin, loading }}
     >
       {children}
     </AuthContext.Provider>

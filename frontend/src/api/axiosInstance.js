@@ -17,7 +17,7 @@ export const useAxiosAuth = () => {
     const token = localStorage.getItem("access_token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
-      console.log("🔐 TOKEN ENVIADO:", config.headers.Authorization);
+      console.log("🔐 TOKEN ENVIADO");
     } else {
       console.warn("⚠️ Nenhum access_token encontrado no localStorage");
     }

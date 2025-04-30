@@ -4,7 +4,7 @@ import { Home, Cog, Clock, LogOut, ChevronLeft, ChevronRight, Sun, Moon } from "
 import { useAuth } from "../context/AuthContext";
 
 export default function Sidebar() {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, isAdmin } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
@@ -47,6 +47,16 @@ export default function Sidebar() {
         </div>
 
         <nav className="mt-4 space-y-2">
+          {isAdmin && (
+            <a
+              href="https://musicflow-backend.onrender.com/admin/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white"
+            >
+              Painel Administrativo
+            </a>
+          )}
           {isAuthenticated && menuItems.map((item) => (
             <Link
               key={item.to}
