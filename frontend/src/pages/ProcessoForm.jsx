@@ -202,7 +202,7 @@ export default function ProcessoForm() {
         </label>
         <div className="relative">
           <label className="flex items-center gap-1 mb-1 text-sm font-medium text-gray-700 dark:text-neutral-300">
-            Agendar execução (opcional)
+            Agendar execução
             <span
               className="group relative cursor-pointer"
               title="Se quiser, você pode agendar uma data e hora para execução automática."
@@ -215,6 +215,7 @@ export default function ProcessoForm() {
             name="data_execucao_agendada"
             value={form.data_execucao_agendada}
             onChange={handleChange}
+            required
             className="w-full border px-3 py-2 rounded focus:outline-none focus:ring focus:ring-pink-300"
           />
         </div>
