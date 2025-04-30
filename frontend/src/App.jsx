@@ -8,6 +8,8 @@ import ProcessoForm from "./pages/ProcessoForm";
 import BaseLayout from "./components/BaseLayout";
 import { useAuth } from "./context/AuthContext";
 import useAutoRefreshToken from "./hooks/useAutoRefreshToken";
+import HomePublic from "./pages/HomePublic";
+import FaqPage from "./pages/FaqPage";
 
 function PrivateRoute({ children }) {
   const { isAuthenticated } = useAuth();
@@ -19,8 +21,10 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route path="/" element={<HomePublic />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/faq" element={<FaqPage />} />
 
       <Route
         path="/home"

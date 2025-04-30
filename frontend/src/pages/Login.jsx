@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import ThemeToggle from "../components/ThemeToggle";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import qs from "qs";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -59,6 +58,24 @@ export default function Login() {
   return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors">
         <ThemeToggle />
+        <header className="w-full px-8 py-3 flex justify-between items-center absolute top-0 left-0 z-20">
+          <h1>
+          <Link
+            to="/"
+            className="text-2xl font-extrabold text-pink-700 dark:text-pink-300"
+            >
+              MusicFlow<span className="text-black dark:text-white">.</span>
+            </Link>
+          </h1>
+          <nav>
+              <Link
+              to="/faq"
+              className="text-base px-6 font-medium text-gray-700 dark:text-neutral-300 hover:text-pink-700 dark:hover:text-pink-300 transition"
+              >
+              FAQ
+              </Link>
+          </nav>
+      </header>
         <div className="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-md w-full max-w-md">
           <h2 className="text-2xl font-bold text-center text-pink-950 dark:text-pink-300 mb-6">
             Login
