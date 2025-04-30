@@ -83,6 +83,14 @@ export default function ProcessoForm() {
 
   return (
     <div className="max-w-xl mx-auto bg-white shadow-md rounded p-6 dark:bg-slate-800">
+      <Link
+        to="/processos"
+        className="mb-4 inline-flex items-center gap-2 text-sm text-pink-700 hover:text-pink-900 dark:text-pink-300 dark:hover:text-white transition"
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+      </Link>
       <h1 className="text-2xl font-bold mb-4">
         {id ? "Editar Processo" : "Novo Processo"}
       </h1>
@@ -196,16 +204,13 @@ export default function ProcessoForm() {
           />
           Ativo
         </label>
-        
-        <label className="flex items-center gap-2 dark:text-neutral-300">
-          Agendar para
-        </label>
+
         <div className="relative">
           <label className="flex items-center gap-1 mb-1 text-sm font-medium text-gray-700 dark:text-neutral-300">
             Agendar execução
             <span
               className="group relative cursor-pointer"
-              title="Se quiser, você pode agendar uma data e hora para execução automática."
+              title="Defina uma data e hora para execução automática."
             >
               <Info className="w-4 h-4 text-pink-600 group-hover:text-pink-800" />
             </span>
@@ -238,12 +243,21 @@ export default function ProcessoForm() {
           placeholder="exemplo@email.com"
         />
       </div>
+      <div className="flex gap-4">
         <button
           type="submit"
           className="bg-pink-600 text-white py-2 px-4 rounded hover:bg-pink-700"
         >
           {id ? "Atualizar" : "Salvar"}
         </button>
+        <button
+          type="button"
+          onClick={() => navigate("/processos")}
+          className="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400 dark:bg-slate-700 dark:text-white dark:hover:bg-slate-600"
+        >
+          Cancelar
+        </button>
+      </div>
       </form>
     </div>
   );
