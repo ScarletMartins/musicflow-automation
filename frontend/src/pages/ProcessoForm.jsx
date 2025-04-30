@@ -17,6 +17,8 @@ export default function ProcessoForm() {
     email_alerta: "",
   });
   const [mensagem, setMensagem] = useState("");
+  const [scriptsDisponiveis, setScriptsDisponiveis] = useState([]);
+  const [modoComando, setModoComando] = useState("dropdown");
 
   useEffect(() => {
     if (id) {
@@ -26,6 +28,13 @@ export default function ProcessoForm() {
         .catch(() => setMensagem("Erro ao carregar processo."));
     }
   }, [id]);
+
+  useEffect(() => {
+    axiosAuth
+      .get("/scripts/")
+      .then((res) => setScriptsDisponiveis(res.data))
+      .catch(() => setScriptsDisponiveis([]));
+  }, []);  
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -122,20 +131,61 @@ export default function ProcessoForm() {
             Comando a ser executado
             <span
               className="group relative cursor-pointer"
-              title="Este campo é obrigatório e deve conter apenas letras, números, espaços, barras (/), pontos (.) e hífens (-)."
+              title="Você pode escolher um script disponível ou digitar um comando manualmente."
             >
               <Info className="w-4 h-4 text-pink-600 group-hover:text-pink-800" />
             </span>
           </label>
-          <input
-            type="text"
-            name="comando"
-            placeholder="Ex: python scripts/teste.py"
-            value={form.comando}
-            onChange={handleChange}
-            className="w-full border px-3 py-2 rounded focus:outline-none focus:ring focus:ring-pink-300"
-            required
-          />
+
+          <div className="flex flex-col sm:flex-row gap-4 mb-2">
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="radio"
+                name="modoComando"
+                value="dropdown"
+                checked={modoComando === "dropdown"}
+                onChange={() => setModoComando("dropdown")}
+              />
+              Selecionar script
+            </label>
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="radio"
+                name="modoComando"
+                value="manual"
+                checked={modoComando === "manual"}
+                onChange={() => setModoComando("manual")}
+              />
+              Digitar comando
+            </label>
+          </div>
+
+          {modoComando === "dropdown" ? (
+            <select
+              name="comando"
+              value={form.comando}
+              onChange={handleChange}
+              className="w-full border px-3 py-2 rounded focus:outline-none focus:ring focus:ring-pink-300"
+              required
+            >
+              <option value="">Selecione um script</option>
+              {scriptsDisponiveis.map((script) => (
+                <option key={script} value={script}>
+                  {script}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input
+              type="text"
+              name="comando"
+              placeholder="Digite o comando completo, ex: python core/scripts/fake/relatorio.py"
+              value={form.comando}
+              onChange={handleChange}
+              className="w-full border px-3 py-2 rounded focus:outline-none focus:ring focus:ring-pink-300"
+              required
+            />
+          )}
         </div>
         <label className="flex items-center gap-2 dark:text-neutral-300">
           <input

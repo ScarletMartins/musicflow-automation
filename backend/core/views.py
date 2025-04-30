@@ -7,16 +7,15 @@ from rest_framework import status, viewsets, permissions
 from .models import ProcessoAutomatizado, ExecucaoProcesso
 from .serializers import ProcessoSerializer, ExecucaoProcessoSerializer
 from core.scripts.executar_agendados import executar_agendados
-from core.utils.email import enviar_email_execucao
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.utils import timezone
 from decouple import config
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from dj_rest_auth.registration.views import SocialLoginView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import CustomTokenObtainPairSerializer
+from core.utils.scripts import listar_scripts_fake
 
 
 @api_view(['GET'])
@@ -103,3 +102,10 @@ class GoogleLogin(SocialLoginView):
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def scripts_disponiveis_view(request):
+    scripts = listar_scripts_fake()
+    return Response(scripts)
