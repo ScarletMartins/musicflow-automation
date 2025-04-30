@@ -50,10 +50,11 @@ Atenção: o repositório foi tornado público temporariamente apenas para fins 
 
 ### 👤 Acesso de Validação
 
-- O cadastro está aberto. Acesse `/register` no frontend para criar um usuário.
+- O cadastro está aberto. Acesse `/register` no frontend para criar um usuário ou faça login com uma conta Google.
 - Ou, se preferir, utilize um login de teste:
   - **Usuário:** `admin`
   - **Senha:** `admin@2232`
+  - Esse usuário possui permissão `is_staff`, portanto verá o botão **Painel Administrativo** na sidebar.
 
 ---
 
@@ -73,18 +74,20 @@ O professor pode:
 
 ### Backend (Django + DRF)
 - Local: `backend/`
-- API REST protegida com JWT
+- API REST protegida com JWT (incluindo campo `is_staff`)
 - Banco de dados PostgreSQL (Render)
 - Scripts agendados com cronjob (cron-job.org)
 - Execução real de comandos com subprocess
+- Integração com login do Google (via dj-rest-auth)
 - Configurações por variáveis de ambiente (`python-decouple`)
 
 ### Frontend (React + Vite)
 - Local: `frontend/`
 - Estilizado com Tailwind CSS
 - Autenticação integrada com backend
-- Interface responsiva com suporte a dark mode
-- Hospedagem no Vercel
+- Interface responsiva com dark mode
+- Login com Google OAuth2
+- Sidebar colapsável com link para `/admin` visível apenas para usuários com `is_staff`
 
 ---
 
@@ -111,16 +114,18 @@ O professor pode:
 
 ## 📌 Requisitos Atendidos
 
-- Acesso via navegador com layout responsivo
-- Backend com persistência relacional (PostgreSQL)
-- CI/CD funcionando com testes automatizados e publicação contínua2
-- Variáveis de ambiente isoladas
-- Cadastro de usuários, login, e ciclo completo de autenticação
-- Logs e notificações enviados por e-mail
-- Tela de CRUD completo para processos
-- Funcionalidade mestre-detalhe: processo com execuções relacionadas
-- Execução programada de processos com alertas
-- Execução real de comandos do sistema via agendamento
+- ✅ Acesso via navegador com layout responsivo
+- ✅ Backend com persistência relacional (PostgreSQL)
+- ✅ CI/CD funcionando com testes automatizados e publicação contínua
+- ✅ Variáveis de ambiente isoladas
+- ✅ Cadastro de usuários, login tradicional e com Google
+- ✅ Logs e notificações enviados por e-mail
+- ✅ Tela de CRUD completo para processos
+- ✅ Funcionalidade mestre-detalhe: processo com execuções relacionadas
+- ✅ Execução programada de processos com alertas
+- ✅ Execução real de comandos do sistema via agendamento
+- ✅ Visualização do botão administrativo apenas para usuários com permissão (`is_staff`)
+- ✅ Integração de IA (Dialogflow) com orientação ao usuário
 
 ---
 
