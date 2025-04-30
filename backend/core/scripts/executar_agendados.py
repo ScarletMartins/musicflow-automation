@@ -47,7 +47,7 @@ def executar_agendados():
                     stderr=subprocess.PIPE,
                     text=True
                 )
-                saida = resultado.stdout
+                saida = resultado.stdout or "(Sem saída)"
                 status_execucao = "SUCESSO"
             except subprocess.CalledProcessError as e:
                 saida = e.stderr or str(e)
@@ -59,6 +59,24 @@ def executar_agendados():
                 saida=saida,
                 resumo=processo.descricao[:200]
             )
+
+            if processo.email_alerta:
+                try:
+                    assunto = f"[MusicFlow] Execução de {processo.nome} - {status_execucao}"
+                    mensagem = (
+                        f"📄 *Resumo da Execução*\n\n"
+                        f"🛠️ Processo: {processo.nome}\n"
+                        f"🕒 Horário: {agora.strftime('%d/%m/%Y %H:%M:%S')}\n"
+                        f"📌 Status: {status_execucao}\n\n"
+                        f"💬 Saída:\n{saida}"
+                    )
+                    enviar_email_execucao(processo.email_alerta, assunto, mensagem)
+                    logging.info(f"E-mail enviado para {processo.email_alerta}.")
+                except Exception as e2:
+                    logging.error(f"Erro ao enviar e-mail: {e2}")
+
+            processo.data_execucao_agendada = None
+            processo.save()
 
         except Exception as e:
             erro_msg = f"Erro ao executar o processo '{processo.nome}': {str(e)}"
@@ -74,9 +92,9 @@ def executar_agendados():
             if processo.email_alerta:
                 try:
                     enviar_email_execucao(
-                        destinatario=processo.email_alerta,
-                        assunto=f"[MusicFlow] Falha na execução de {processo.nome}",
-                        mensagem=erro_msg
+                        processo.email_alerta,
+                        f"[MusicFlow] Falha na execução de {processo.nome}",
+                        erro_msg
                     )
                     logging.info(f"E-mail de falha enviado para {processo.email_alerta}.")
                 except Exception as e2:
