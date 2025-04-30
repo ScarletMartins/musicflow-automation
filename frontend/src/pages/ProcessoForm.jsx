@@ -259,6 +259,9 @@ export default function ProcessoForm() {
         </button>
       </div>
       </form>
+      <div className="mt-12">
+                          <ChatBot />
+      </div>
     </div>
   );
 }
