@@ -11,7 +11,6 @@ import useAutoRefreshToken from "./hooks/useAutoRefreshToken";
 
 function PrivateRoute({ children }) {
   const { isAuthenticated } = useAuth();
-  console.log("PrivateRoute - Autenticado?", isAuthenticated);
   return isAuthenticated ? children : <Navigate to="/" />;
 }
 
