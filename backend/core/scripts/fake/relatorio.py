@@ -1,5 +1,6 @@
 from datetime import datetime
 import logging
+import os
 
 
 def gerar_relatorio():
@@ -15,9 +16,18 @@ def gerar_relatorio():
         )
     }
 
+    os.makedirs("relatorios", exist_ok=True)
+    caminho_arquivo = f"relatorios/relatorio_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
+
+    with open(caminho_arquivo, "w", encoding="utf-8") as f:
+        f.write(f"{relatorio['titulo']}\n\n")
+        f.write(f"Data: {relatorio['data']}\n\n")
+        f.write(relatorio["conteudo"])
+
     logging.info("RELATÓRIO gerado com sucesso.")
-    print("✅ Relatório de execução gerado. Todas as operações ocorreram conforme esperado.")
-    return {"status": "ok", "relatorio": relatorio}
+    print(f">> RELATÓRIO gerado: {caminho_arquivo}")
+
+    return {"status": "ok", "relatorio": relatorio, "arquivo": caminho_arquivo}
 
 
 if __name__ == "__main__":

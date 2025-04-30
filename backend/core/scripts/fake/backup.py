@@ -12,13 +12,15 @@ def executar_backup():
     try:
         shutil.copyfile(origem, destino)
         logging.info(f"BACKUP realizado: {destino}")
-        print("✅ Backup concluído com sucesso. O arquivo foi salvo na pasta designada.")
+        print("✅ Backup concluído com sucesso.")
         return {"status": "ok", "arquivo": destino}
     except Exception as e:
         logging.error(f"Erro ao realizar backup: {e}")
-        print("❌ Erro crítico ao executar o backup. Ação necessária por parte dos administradores.")
+        print("❌ Erro crítico ao executar o backup.")
         return {"status": "erro", "mensagem": str(e)}
 
 
 if __name__ == "__main__":
-    executar_backup()
+    resultado = executar_backup()
+    if resultado["status"] != "ok":
+        sys.exit(1)

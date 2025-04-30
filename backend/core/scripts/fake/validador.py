@@ -1,5 +1,8 @@
 import hashlib
 import logging
+import sys
+
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
 
 def verificar_integridade(caminho="db.sqlite3"):
@@ -20,4 +23,6 @@ def verificar_integridade(caminho="db.sqlite3"):
 
 
 if __name__ == "__main__":
-    verificar_integridade()
+    resultado = verificar_integridade()
+    if resultado["status"] != "ok":
+        sys.exit(1)
