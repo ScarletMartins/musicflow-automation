@@ -16,6 +16,7 @@ def gerar_relatorio():
     }
 
     logging.info("RELATÓRIO gerado com sucesso.")
+    print("✅ Relatório de execução gerado. Todas as operações ocorreram conforme esperado.")
     return {"status": "ok", "relatorio": relatorio}
 
 

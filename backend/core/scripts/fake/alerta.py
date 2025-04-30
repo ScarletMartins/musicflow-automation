@@ -11,6 +11,7 @@ def enviar_alerta():
     }
 
     logging.info(f"ALERTA: {log['mensagem']}")
+    
     return {"status": "simulado", "log": log}
 
 

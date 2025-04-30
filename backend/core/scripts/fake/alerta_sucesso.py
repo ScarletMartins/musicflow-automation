@@ -11,6 +11,7 @@ def enviar_alerta():
     }
 
     logging.info(f"ALERTA SUCESSO: {log['mensagem']}")
+    print("✅ Alerta de sucesso executado com êxito. Todos os sistemas estão operando normalmente.")
     return {"status": "ok", "log": log}
 
 
