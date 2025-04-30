@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Home, Cog, Clock, LogOut, ChevronLeft, ChevronRight, Sun, Moon, ShieldCheck } from "lucide-react";
+import { Home, Cog, Clock, LogOut, ChevronLeft, ChevronRight, Sun, Moon, ShieldCheck, HelpCircle } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 export default function Sidebar() {
@@ -34,6 +34,7 @@ export default function Sidebar() {
     { label: "Home", to: "/home", icon: <Home className="w-5 h-5" /> },
     { label: "Processos", to: "/processos", icon: <Cog className="w-5 h-5" /> },
     { label: "Histórico", to: "/historico", icon: <Clock className="w-5 h-5" /> },
+    { label: "FAQ", to: "/faq", icon: <HelpCircle className="w-5 h-5" /> },
   ];
 
   return (
